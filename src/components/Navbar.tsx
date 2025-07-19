@@ -1,5 +1,5 @@
 import type React from "react";
-import { Twirl as Hamburger } from 'hamburger-react'
+import { Twirl as Hamburger } from 'hamburger-react';
 import logo from '../assets/Logo-Full-Light.png';
 import github from '../assets/Github_Cyan.png';
 import linkedIn from '../assets/LinkedIn_Cyan.png';
@@ -8,28 +8,29 @@ import ToggleButton from "./shared/ToggleButton";
 
 const Navbar: React.FC = () => {
     return (
-        <nav className="flex justify-between items-center px-15 py-5 h-25">
-            <div className="h-full">
-                {/* Left */}
-                {/* Logo  */}
-                <img src={logo} alt="" className="h-full w-auto" />
+        <nav className="flex justify-between items-center px-4 sm:px-6 md:px-10 lg:px-20 py-4 h-20">
+            {/* Left: Logo */}
+            <div className="h-full flex items-center">
+                <img src={logo} alt="Logo" className="h-full w-auto max-h-12" />
             </div>
-            <div className="flex gap-5 h-full">
-                {/* Right */}
-                <div className="flex h-full items-center">
-                    {/* Language Toggle */}
-                    <ToggleButton />
+
+            {/* Right */}
+            <div className="flex items-center gap-4">
+                {/* Language Toggle */}
+                <ToggleButton />
+
+                {/* Social Icons */}
+                <div className="hidden md:flex items-center gap-2">
+                    <img src={github} alt="GitHub" className="h-6 w-auto" />
+                    <img src={linkedIn} alt="LinkedIn" className="h-6 w-auto" />
+                    <img src={twitter} alt="Twitter" className="h-6 w-auto" />
                 </div>
-                <div className="flex gap-2 h-full items-center">
-                    {/* Buttons */}
-                    <img src={github} alt="" className="h-2/5 w-auto" />
-                    <img src={linkedIn} alt="" className="h-2/3 w-auto" />
-                    <img src={twitter} alt="" className="h-2/5 w-auto" />
-                    <Hamburger color="#14C1ED" />
-                </div>
+
+                {/* Hamburger Menu (Always visible) */}
+                <Hamburger color="#14C1ED" size={20} />
             </div>
         </nav>
     );
-}
+};
 
 export default Navbar;
