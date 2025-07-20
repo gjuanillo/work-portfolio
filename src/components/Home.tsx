@@ -13,6 +13,10 @@ const Home = ({ language }: { language: Language }) => {
                     ? 'Full-stack developer with a passion for AI. Building modern, practical, and memorable digital experiences that elevate your brand.'
                     : 'フルスタック開発者として、AI に情熱を注ぎながら、現代的で実用的、そして印象に残るウェブ体験を構築しています。'}
             </p>
+            <button className="mt-8 px-6 py-3 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white 
+                border border-white rounded-full transition-colors duration-300 hover:bg-white hover:text-[#14c1ed]">
+                {language === 'EN' ? 'Get Connected' : 'つながり'}
+            </button>
         </section>
     );
 };
