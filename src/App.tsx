@@ -1,7 +1,7 @@
 import './App.css';
 import Navbar from './components/Navbar';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
@@ -73,7 +73,10 @@ function SetCamera() {
 
 function App() {
     const waveAmplitude = useRef(1);
+    const [lang, setLang] = useState<'EN' | 'JP'>('EN');
 
+    console.log(lang);
+    
     return (
         <>
             <div className="fixed inset-0 -z-50">
@@ -86,7 +89,7 @@ function App() {
 
             {/* Main content */}
             <div className="relative min-h-screen">
-                <Navbar />
+                <Navbar language={lang} setLanguage={setLang}/>
 
                 <main className="relative z-0">
                     <section className="h-screen flex items-center justify-center">

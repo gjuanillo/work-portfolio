@@ -5,8 +5,10 @@ import github from '../assets/Github_Cyan.png';
 import linkedIn from '../assets/LinkedIn_Cyan.png';
 import twitter from '../assets/X-Cyan.png';
 import ToggleButton from "./shared/ToggleButton";
+import type { NavbarProps } from "./types/types";
 
-const Navbar: React.FC = () => {
+
+const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
     return (
         <nav className="fixed top-0 z-50 w-full flex justify-between items-center px-4 sm:px-6 md:px-10 lg:px-20 py-4 h-20">
             {/* Left: Logo */}
@@ -17,7 +19,7 @@ const Navbar: React.FC = () => {
             {/* Right */}
             <div className="flex items-center gap-4">
                 {/* Language Toggle */}
-                <ToggleButton />
+                <ToggleButton language={language} setLanguage={setLanguage} />
 
                 {/* Social Icons */}
                 <div className="hidden md:flex items-center gap-2">
