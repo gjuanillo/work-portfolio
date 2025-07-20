@@ -66,7 +66,7 @@ function SetCamera() {
     useEffect(() => {
         camera.position.set(35, 0, 5); // x, y, z
         camera.lookAt(0, 0, 0);       // focus on center
-        camera.rotation.z = -Math.PI / 12;
+        camera.rotation.z = -Math.PI / 8;
     }, [camera]);
 
     return null;
