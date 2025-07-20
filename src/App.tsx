@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
+import Home from './components/Home';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -76,7 +77,7 @@ function App() {
     const [lang, setLang] = useState<'EN' | 'JP'>('EN');
 
     console.log(lang);
-    
+
     return (
         <>
             <div className="fixed inset-0 -z-50">
@@ -89,16 +90,13 @@ function App() {
 
             {/* Main content */}
             <div className="relative min-h-screen">
-                <Navbar language={lang} setLanguage={setLang}/>
+                <Navbar language={lang} setLanguage={setLang} />
 
-                <main className="relative z-0">
-                    <section className="h-screen flex items-center justify-center">
-                        <h1 className="text-white text-4xl font-bold">
-                            Header
-                        </h1>
-                    </section>
+                <main className="relative z-0 snap-y snap-mandatory h-screen overflow-y-scroll scroll-smooth">
 
-                    <section className="h-screen flex items-center justify-center">
+                    <Home language={lang} />
+
+                    <section className="h-screen snap-start flex items-center justify-center">
                         <h2 className="text-white text-2xl">
                         </h2>
                     </section>

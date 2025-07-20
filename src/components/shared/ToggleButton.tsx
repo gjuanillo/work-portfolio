@@ -1,6 +1,4 @@
-import { useState } from "react";
 import type { NavbarProps } from "../types/types";
-
 
 const ToggleButton: React.FC<NavbarProps> = ({ language, setLanguage }) => {
 

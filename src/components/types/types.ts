@@ -1,5 +1,5 @@
 
-type Language = 'EN' | 'JP';
+export type Language = 'EN' | 'JP';
 
 export interface NavbarProps {
     language: Language;
