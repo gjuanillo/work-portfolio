@@ -8,7 +8,7 @@ import ToggleButton from "./shared/ToggleButton";
 
 const Navbar: React.FC = () => {
     return (
-        <nav className="flex justify-between items-center px-4 sm:px-6 md:px-10 lg:px-20 py-4 h-20">
+        <nav className="fixed top-0 z-50 w-full flex justify-between items-center px-4 sm:px-6 md:px-10 lg:px-20 py-4 h-20">
             {/* Left: Logo */}
             <div className="h-full flex items-center">
                 <img src={logo} alt="Logo" className="h-full w-auto max-h-12" />

@@ -42,7 +42,7 @@ function WaveBackground({ amplitudeRef }: { amplitudeRef: React.MutableRefObject
         new THREE.Float32BufferAttribute(positions, 3)
     );
 
-    const material = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05 });
+    const material = new THREE.PointsMaterial({ color: 0x14c1ed, size: 0.04 });
 
     return <points ref={meshRef} geometry={geometry} material={material} />;
 }
@@ -59,27 +59,47 @@ function DebugCanvas() {
     return null;
 }
 
+function SetCamera() {
+    const { camera } = useThree();
+
+    useEffect(() => {
+        camera.position.set(35, 0, 5); // x, y, z
+        camera.lookAt(0, 0, 0);       // focus on center
+        camera.rotation.z = -Math.PI / 12;
+    }, [camera]);
+
+    return null;
+}
+
 function App() {
-    const waveAmplitude = useRef(0.2);
+    const waveAmplitude = useRef(1);
 
     return (
         <>
-            <Canvas className="fixed top-0 left-0 w-full h-full -z-10">
-                <DebugCanvas />
-                <WaveBackground amplitudeRef={waveAmplitude} />
-            </Canvas>
-            <div className="relative z-10 w-screen min-h-screen snap-y snap-mandatory">
-                <section className="section h-screen snap-start flex items-center justify-center text-white">
-                    <h1 className="text-4xl">Welcome to My Portfolio</h1>
-                </section>
+            <div className="fixed inset-0 -z-50">
+                <Canvas className="w-full h-full">
+                    <SetCamera />
+                    <DebugCanvas />
+                    <WaveBackground amplitudeRef={waveAmplitude} />
+                </Canvas>
+            </div>
 
-                <section className="section h-screen snap-start flex items-center justify-center text-white">
-                    <h1 className="text-4xl">About Me</h1>
-                </section>
+            {/* Main content */}
+            <div className="relative min-h-screen">
+                <Navbar />
 
-                <section className="section h-screen snap-start flex items-center justify-center text-white">
-                    <h1 className="text-4xl">Projects</h1>
-                </section>
+                <main className="relative z-0">
+                    <section className="h-screen flex items-center justify-center">
+                        <h1 className="text-white text-4xl font-bold">
+                            Header
+                        </h1>
+                    </section>
+
+                    <section className="h-screen flex items-center justify-center">
+                        <h2 className="text-white text-2xl">
+                        </h2>
+                    </section>
+                </main>
             </div>
         </>
     );
