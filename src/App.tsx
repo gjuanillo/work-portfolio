@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from './components/Navbar';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -47,29 +47,41 @@ function WaveBackground({ amplitudeRef }: { amplitudeRef: React.MutableRefObject
     return <points ref={meshRef} geometry={geometry} material={material} />;
 }
 
+function DebugCanvas() {
+    const { gl, size, camera } = useThree();
+
+    useEffect(() => {
+        console.log('Canvas size:', size);
+        console.log('Camera:', camera);
+        console.log('WebGL Renderer:', gl.domElement); // the actual canvas
+    }, [size, camera, gl.domElement]);
+
+    return null;
+}
+
 function App() {
     const waveAmplitude = useRef(0.2);
 
     return (
-        <div className="relative w-screen min-h-screen snap-y snap-mandatory">
-            <Navbar />
+        <>
             <Canvas className="fixed top-0 left-0 w-full h-full -z-10">
+                <DebugCanvas />
                 <WaveBackground amplitudeRef={waveAmplitude} />
             </Canvas>
+            <div className="relative z-10 w-screen min-h-screen snap-y snap-mandatory">
+                <section className="section h-screen snap-start flex items-center justify-center text-white">
+                    <h1 className="text-4xl">Welcome to My Portfolio</h1>
+                </section>
 
+                <section className="section h-screen snap-start flex items-center justify-center text-white">
+                    <h1 className="text-4xl">About Me</h1>
+                </section>
 
-            <section className="section h-screen snap-start flex items-center justify-center text-white">
-                <h1 className="text-4xl">Welcome to My Portfolio</h1>
-            </section>
-
-            <section className="section h-screen snap-start flex items-center justify-center text-white">
-                <h1 className="text-4xl">About Me</h1>
-            </section>
-
-            <section className="section h-screen snap-start flex items-center justify-center text-white">
-                <h1 className="text-4xl">Projects</h1>
-            </section>
-        </div>
+                <section className="section h-screen snap-start flex items-center justify-center text-white">
+                    <h1 className="text-4xl">Projects</h1>
+                </section>
+            </div>
+        </>
     );
 }
 
