@@ -3,7 +3,7 @@ import type { NavbarProps } from "../types/types";
 const ToggleButton: React.FC<NavbarProps> = ({ language, setLanguage }) => {
 
     return (
-        <div className="flex gap-2 items-center text-lg font-medium text-neutral-200">
+        <div className="flex gap-3 items-center text-xl pr-3 font-medium text-neutral-200">
             <button
                 onClick={() => setLanguage('EN')}
                 className={`transition-colors duration-300 cursor-pointer ${language === 'EN' ? 'text-[#14C1ED]' : 'text-neutral-200'}`}

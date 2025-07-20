@@ -22,10 +22,15 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                 <ToggleButton language={language} setLanguage={setLanguage} />
 
                 {/* Social Icons */}
-                <div className="hidden md:flex items-center gap-2">
-                    <img src={github} alt="GitHub" className="h-8 w-auto" />
-                    <img src={linkedIn} alt="LinkedIn" className="h-10 w-auto" />
-                    <img src={twitter} alt="Twitter" className="h-8 w-auto" />
+                <div className="hidden md:flex items-center gap-3">
+                    <a href="https://github.com/gjuanillo" target="_blank"
+                        rel="noopener noreferrer"><img src={github} alt="GitHub" className="h-8 w-auto" /></a>
+                    <a href="https://www.linkedin.com/in/gcjuanillo/" target="_blank"
+                        rel="noopener noreferrer">
+                        <img src={linkedIn} alt="LinkedIn" className="h-12 w-auto" /></a>
+                    <a href="https://github.com/gjuanillo" target="_blank"
+                        rel="noopener noreferrer">
+                        <img src={twitter} alt="Twitter" className="h-8 w-auto" /></a>
                 </div>
 
                 {/* Hamburger Menu (Always visible) */}

@@ -74,7 +74,7 @@ function SetCamera() {
 
 function App() {
     const waveAmplitude = useRef(1);
-    const [lang, setLang] = useState<'EN' | 'JP'>('EN');
+    const [lang, setLang] = useState<'EN' | 'JP'>('JP');
 
     console.log(lang);
 
