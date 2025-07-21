@@ -1,19 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState, useImperativeHandle } from "react";
 import gsap from "gsap";
 import type { SectionProps } from "./types/types";
 import { typeText } from "./utilities/typeText";
 
-
-const Home = ({ language, isActive }: SectionProps) => {
-    const containerRef = useRef<HTMLElement>(null);
+const Home = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, ref) => {
+    const homeRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const subtitleRef = useRef<HTMLParagraphElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const cursorRef = useRef<HTMLSpanElement>(null);
-    const glitchRef = useRef<HTMLDivElement>(null);
     const [titleText, setTitleText] = useState("");
     const [subtitleText, setSubtitleText] = useState("");
     const [showCursor, setShowCursor] = useState(false);
+
+    useImperativeHandle(ref, () => homeRef.current as HTMLElement, []);
 
     const content = language === 'JP' ? {
         title: "クラフトマンシップと精密さ、パフォーマンス、個性を融合させたデジタル体験",
@@ -25,34 +25,16 @@ const Home = ({ language, isActive }: SectionProps) => {
         button: "Get Connected"
     };
 
-    // Main animation sequence
     useEffect(() => {
         if (!isActive) return;
 
         const ctx = gsap.context(() => {
-            // Reset states
             setTitleText("");
             setSubtitleText("");
             setShowCursor(true);
 
-            // Initial setup
-            gsap.set([titleRef.current, subtitleRef.current, buttonRef.current], {
-                opacity: 0,
-            });
+            gsap.set([titleRef.current, subtitleRef.current, buttonRef.current], { opacity: 0 });
 
-            // Glitch effect
-            gsap.fromTo(glitchRef.current,
-                { opacity: 0 },
-                {
-                    opacity: 1,
-                    duration: 0.3,
-                    repeat: 5,
-                    yoyo: true,
-                    ease: "power2.inOut"
-                }
-            );
-
-            // Create timeline
             const tl = gsap.timeline();
 
             tl.to(titleRef.current, {
@@ -111,17 +93,17 @@ const Home = ({ language, isActive }: SectionProps) => {
                 }
             );
 
-        }, containerRef);
+        }, homeRef);
 
         return () => ctx.revert();
     }, [isActive, language, content.subtitle, content.title]);
 
     return (
         <section
-            ref={containerRef}
+            ref={homeRef}
             className="relative h-screen snap-start flex flex-col items-center justify-center px-4 text-center overflow-hidden"
         >
-            {/* Square Debris  */}
+            {/* Square Debris */}
             <div className="absolute inset-0 pointer-events-none">
                 {[...Array(20)].map((_, i) => (
                     <div
@@ -137,11 +119,6 @@ const Home = ({ language, isActive }: SectionProps) => {
                     />
                 ))}
             </div>
-
-            <div
-                ref={glitchRef}
-                className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 pointer-events-none"
-            />
 
             <div className="relative z-10 max-w-4xl">
                 <h1
@@ -224,6 +201,6 @@ const Home = ({ language, isActive }: SectionProps) => {
             </div>
         </section>
     );
-};
+});
 
 export default Home;

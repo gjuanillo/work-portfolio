@@ -32,7 +32,7 @@ export const techStacks = [
         border: "border-teal-500/30",
         glow: "shadow-teal-500/20",
         image: tailwind,
-        size: "md"
+        size: "sm"
     },
     {
         name: "GSAP",
@@ -40,7 +40,7 @@ export const techStacks = [
         border: "border-lime-500/30",
         glow: "shadow-lime-500/20",
         image: GSAP,
-        size: "sm"
+        size: "md"
     },
     {
         name: "Three.js",

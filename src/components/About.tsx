@@ -97,6 +97,19 @@ const About = ({ language, isActive }: SectionProps) => {
                 ease: "linear",
             });
 
+            gsap.fromTo(".tech-grid",
+                { opacity: 0, scale: 0.95 },
+                {
+                    opacity: 0.8,
+                    scale: 1.5,
+                    duration: 1,
+                    stagger: 0.2,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "power2.inOut"
+                }
+            );
+
         }, containerRef);
 
         return () => ctx.revert();
@@ -117,6 +130,21 @@ const About = ({ language, isActive }: SectionProps) => {
             ref={containerRef}
             className="min-h-screen snap-start flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0 relative overflow-hidden"
         >
+            <div className="absolute inset-0 pointer-events-none">
+                {[...Array(20)].map((_, i) => (
+                    <div
+                        key={i}
+                        className="tech-grid absolute border border-cyan-500/20"
+                        style={{
+                            width: `${20 + Math.random() * 40}px`,
+                            height: `${20 + Math.random() * 40}px`,
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                            transform: `rotate(${Math.random() * 360}deg)`
+                        }}
+                    />
+                ))}
+            </div>
             <div className="max-w-8xl mx-auto w-full flex flex-col justify-center lg:flex-row gap-6 sm:gap-8 lg:gap-12 items-center lg:items-start">
                 {/* Left: Tech Stack Bento Box*/}
                 <div

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Twirl as Hamburger } from 'hamburger-react';
 import logo from '../assets/Logo-Full-Light.png';
@@ -13,6 +13,11 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
     const socialRefs = useRef<HTMLDivElement[]>([]);
     const langRef = useRef(null);
     const navRef = useRef(null);
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        document.body.style.overflow = isOpen ? "hidden" : "auto";
+    }, [isOpen]);
 
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
@@ -45,44 +50,79 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
     }, []);
 
     return (
-        <nav ref={navRef} className="fixed top-0 z-50 w-full flex justify-between items-center px-4 sm:px-6 md:px-10 lg:px-20 py-4 h-30">
-            {/* Left: Logo */}
-            <div ref={logoRef} className="h-full flex items-center">
-                <img src={logo} alt="Logo" className="h-full w-auto max-h-18" />
-            </div>
-
-            {/* Right */}
-            <div className="flex items-center gap-4">
-                {/* Language Toggle */}
-                <div ref={langRef}>
-                    <ToggleButton language={language} setLanguage={setLanguage} />
+        <>
+            <nav ref={navRef} className="fixed top-0 z-50 w-full flex justify-between items-center px-4 sm:px-6 md:px-10 lg:px-20 py-4 h-30">
+                {/* Left: Logo */}
+                <div ref={logoRef} className="h-full flex items-center">
+                    <img src={logo} alt="Logo" className="h-full w-auto max-h-18" />
                 </div>
 
-                {/* Social Icons */}
-                <div className="hidden md:flex items-center gap-3">
-                    {[github, linkedIn, twitter].map((src, idx) => (
-                        <a
-                            key={idx}
-                            ref={(el) => el && (socialRefs.current[idx] = el)}
-                            href={idx === 1
-                                ? "https://www.linkedin.com/in/gcjuanillo/"
-                                : idx === 2 ? "https://x.com" : "https://github.com/gjuanillo"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <img
-                                src={src}
-                                alt="icon"
-                                className={`h-${idx === 1 ? 12 : 8} w-auto`}
-                            />
-                        </a>
-                    ))}
-                </div>
+                {/* Right */}
+                <div className="flex items-center gap-4">
+                    {/* Language Toggle */}
+                    <div ref={langRef}>
+                        <ToggleButton language={language} setLanguage={setLanguage} />
+                    </div>
 
-                {/* Hamburger Menu (optional to animate) */}
-                <Hamburger color="#14C1ED" size={30} />
+                    {/* Social Icons */}
+                    <div className="hidden md:flex items-center gap-3">
+                        {[github, linkedIn, twitter].map((src, idx) => (
+                            <a
+                                key={idx}
+                                ref={(el) => el && (socialRefs.current[idx] = el)}
+                                href={
+                                    idx === 1
+                                        ? "https://www.linkedin.com/in/gcjuanillo/"
+                                        : idx === 2
+                                            ? "https://x.com"
+                                            : "https://github.com/gjuanillo"
+                                }
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img
+                                    src={src}
+                                    alt="icon"
+                                    className={`h-${idx === 1 ? 12 : 8} w-auto`}
+                                />
+                            </a>
+                        ))}
+                    </div>
+
+                    {/* Hamburger Menu */}
+                    <Hamburger toggled={isOpen} toggle={setIsOpen} color="#14C1ED" size={30} />
+                </div>
+            </nav>
+
+            {/* Slide-in Menu */}
+            <div
+                className={`
+                fixed inset-0 
+                bg-[#3e4b4d]/10 
+                backdrop-blur-lg 
+                flex flex-col items-center justify-center gap-8 
+                transition-all duration-500 ease-out 
+                z-40
+                ${isOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}
+              `}
+            >
+                {['Home', 'About', 'Projects', 'Contact'].map((label, index) => (
+                    <button
+                        key={label}
+                        onClick={() => {
+                            const section = document.querySelectorAll('section')[index];
+                            if (section) {
+                                section.scrollIntoView({ behavior: 'smooth' });
+                                setIsOpen(false);
+                            }
+                        }}
+                        className="text-cyan-400 text-2xl font-mono hover:text-white transition-colors duration-300"
+                    >
+                        {label}
+                    </button>
+                ))}
             </div>
-        </nav>
+        </>
     );
 };
 

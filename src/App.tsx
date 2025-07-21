@@ -12,10 +12,9 @@ import CameraPosition from './components/animation/CameraPosition';
 
 gsap.registerPlugin(ScrollTrigger);
 
-
-
-
 function App() {
+    const homeRef = useRef<HTMLElement>(null);
+    const aboutRef = useRef<HTMLElement>(null);
     const waveAmplitude = useRef(1.5);
     const [lang, setLang] = useState<'EN' | 'JP'>('EN');
     const [activeSection, setActiveSection] = useState(0);
@@ -33,7 +32,6 @@ function App() {
             },
             { threshold: 0.4 } // trigger sensitivity
         );
-
         sections.forEach((section) => observer.observe(section));
         return () => observer.disconnect();
     }, []);
@@ -51,21 +49,9 @@ function App() {
             {/* Main content */}
             <div className="relative min-h-screen">
                 <Navbar language={lang} setLanguage={setLang} />
-
                 <main className="relative z-0 snap-y snap-mandatory h-screen overflow-y-scroll scroll-smooth">
-
-                    <Home language={lang} isActive={activeSection === 0} />
-
-                    <About language={lang} isActive={activeSection === 1} />
-                    <section className="h-screen snap-start flex items-center justify-center">
-                        <h1 className="text-white text-2xl">
-                        </h1>
-                    </section>
-
-                    <section className="h-screen snap-start flex items-center justify-center">
-                        <h1 className="text-white text-2xl">
-                        </h1>
-                    </section>
+                    <Home ref={homeRef} language={lang} isActive={activeSection === 0} />
+                    <About ref={aboutRef} language={lang} isActive={activeSection === 1} />
                 </main>
             </div>
         </>
