@@ -1,4 +1,5 @@
-import type React from "react";
+import { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
 import { Twirl as Hamburger } from 'hamburger-react';
 import logo from '../assets/Logo-Full-Light.png';
 import github from '../assets/Github_Cyan.png';
@@ -7,33 +8,78 @@ import twitter from '../assets/X-Cyan.png';
 import ToggleButton from "./shared/ToggleButton";
 import type { NavbarProps } from "./types/types";
 
-
 const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
+    const logoRef = useRef(null);
+    const socialRefs = useRef<HTMLDivElement[]>([]);
+    const langRef = useRef(null);
+    const navRef = useRef(null);
+
+    useLayoutEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.from(logoRef.current, {
+                x: -50,
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.out'
+            });
+
+            gsap.from(langRef.current, {
+                y: -20,
+                opacity: 0,
+                delay: 0.4,
+                duration: 0.8,
+                ease: 'power2.out'
+            });
+
+            gsap.from(socialRefs.current, {
+                y: -20,
+                opacity: 0,
+                stagger: 0.15,
+                delay: 0.6,
+                duration: 0.8,
+                ease: 'power2.out'
+            });
+        }, navRef); // scoped only to this component
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <nav className="fixed top-0 z-50 w-full flex justify-between items-center px-4 sm:px-6 md:px-10 lg:px-20 py-4 h-30">
+        <nav ref={navRef} className="fixed top-0 z-50 w-full flex justify-between items-center px-4 sm:px-6 md:px-10 lg:px-20 py-4 h-30">
             {/* Left: Logo */}
-            <div className="h-full flex items-center">
+            <div ref={logoRef} className="h-full flex items-center">
                 <img src={logo} alt="Logo" className="h-full w-auto max-h-18" />
             </div>
 
             {/* Right */}
             <div className="flex items-center gap-4">
                 {/* Language Toggle */}
-                <ToggleButton language={language} setLanguage={setLanguage} />
+                <div ref={langRef}>
+                    <ToggleButton language={language} setLanguage={setLanguage} />
+                </div>
 
                 {/* Social Icons */}
                 <div className="hidden md:flex items-center gap-3">
-                    <a href="https://github.com/gjuanillo" target="_blank"
-                        rel="noopener noreferrer"><img src={github} alt="GitHub" className="h-8 w-auto" /></a>
-                    <a href="https://www.linkedin.com/in/gcjuanillo/" target="_blank"
-                        rel="noopener noreferrer">
-                        <img src={linkedIn} alt="LinkedIn" className="h-12 w-auto" /></a>
-                    <a href="https://github.com/gjuanillo" target="_blank"
-                        rel="noopener noreferrer">
-                        <img src={twitter} alt="Twitter" className="h-8 w-auto" /></a>
+                    {[github, linkedIn, twitter].map((src, idx) => (
+                        <a
+                            key={idx}
+                            ref={(el) => el && (socialRefs.current[idx] = el)}
+                            href={idx === 1
+                                ? "https://www.linkedin.com/in/gcjuanillo/"
+                                : "https://github.com/gjuanillo"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <img
+                                src={src}
+                                alt="icon"
+                                className={`h-${idx === 1 ? 12 : 8} w-auto`}
+                            />
+                        </a>
+                    ))}
                 </div>
 
-                {/* Hamburger Menu (Always visible) */}
+                {/* Hamburger Menu (optional to animate) */}
                 <Hamburger color="#14C1ED" size={30} />
             </div>
         </nav>
