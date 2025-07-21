@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
             gsap.from(logoRef.current, {
                 x: -50,
                 opacity: 0,
-                duration: 1,
+                duration: 2,
                 ease: 'power2.out'
             });
 
@@ -27,7 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                 y: -20,
                 opacity: 0,
                 delay: 0.4,
-                duration: 0.8,
+                duration: 1.5,
                 ease: 'power2.out'
             });
 
@@ -36,10 +36,10 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                 opacity: 0,
                 stagger: 0.15,
                 delay: 0.6,
-                duration: 0.8,
+                duration: 1.5,
                 ease: 'power2.out'
             });
-        }, navRef); // scoped only to this component
+        }, navRef);
 
         return () => ctx.revert();
     }, []);
@@ -66,7 +66,7 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                             ref={(el) => el && (socialRefs.current[idx] = el)}
                             href={idx === 1
                                 ? "https://www.linkedin.com/in/gcjuanillo/"
-                                : "https://github.com/gjuanillo"}
+                                : idx === 2 ? "https://x.com" : "https://github.com/gjuanillo"}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
