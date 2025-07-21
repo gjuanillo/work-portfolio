@@ -145,7 +145,7 @@ function App() {
 
                 <main className="relative z-0 snap-y snap-mandatory h-screen overflow-y-scroll scroll-smooth">
 
-                    <Home language={lang} />
+                    <Home language={lang} isActive={activeSection === 0} />
 
                     <section className="h-screen snap-start flex items-center justify-center">
                         <h2 className="text-white text-2xl">
