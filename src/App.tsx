@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
 import Home from './components/Home';
+import circleTexture from './assets/circle-sprite.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,7 +44,16 @@ function WaveBackground({ amplitudeRef }: { amplitudeRef: React.MutableRefObject
         new THREE.Float32BufferAttribute(positions, 3)
     );
 
-    const material = new THREE.PointsMaterial({ color: 0x14c1ed, size: 0.04 });
+    const texture = new THREE.TextureLoader().load(circleTexture);
+    const material = new THREE.PointsMaterial({
+        map: texture,
+        color: 0x14c1ed,
+        size: 0.05,
+        sizeAttenuation: true,
+        transparent: true,
+        alphaTest: 0.5,
+        depthWrite: false,
+    });
 
     return <points ref={meshRef} geometry={geometry} material={material} />;
 }
@@ -60,29 +70,70 @@ function DebugCanvas() {
     return null;
 }
 
-function SetCamera() {
+function SetCamera({ sectionIndex }: { sectionIndex: number }) {
     const { camera } = useThree();
 
     useEffect(() => {
-        camera.position.set(35, 0, 5); // x, y, z
-        camera.lookAt(0, 0, 0);       // focus on center
-        camera.rotation.z = -Math.PI / 8;
-    }, [camera]);
+        const positions = [
+            { x: 35, y: 0, z: 5, tilt: -Math.PI / 8 },   // Section 0
+            { x: 0, y: 2, z: 5, tilt: 0 },             // Section 1
+            { x: -35, y: 0, z: 5, tilt: Math.PI / 12 },  // Section 2
+            { x: 0, y: 10, z: 0, tilt: 0 },  // Section 2
+        ];
+
+        const target = positions[sectionIndex] || positions[0];
+
+        // Animate position
+        gsap.to(camera.position, {
+            x: target.x,
+            y: target.y,
+            z: target.z,
+            duration: 1.5,
+            ease: 'power2.inOut',
+            onUpdate: () => {
+                camera.lookAt(0, 0, 0);
+            }
+        });
+
+        // Animate tilt (z-rotation)
+        gsap.to(camera.rotation, {
+            z: target.tilt,
+            duration: 1.5,
+            ease: 'power2.inOut'
+        });
+    }, [sectionIndex, camera]);
 
     return null;
 }
 
 function App() {
-    const waveAmplitude = useRef(1);
+    const waveAmplitude = useRef(1.5);
     const [lang, setLang] = useState<'EN' | 'JP'>('JP');
+    const [activeSection, setActiveSection] = useState(0);
 
-    console.log(lang);
+    useEffect(() => {
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const index = [...sections].indexOf(entry.target as HTMLElement);
+                        setActiveSection(index);
+                    }
+                });
+            },
+            { threshold: 0.4 } // adjust based on trigger sensitivity
+        );
+
+        sections.forEach((section) => observer.observe(section));
+        return () => observer.disconnect();
+    }, []);
 
     return (
         <>
             <div className="fixed inset-0 -z-50">
                 <Canvas className="w-full h-full">
-                    <SetCamera />
+                    <SetCamera sectionIndex={activeSection} />
                     <DebugCanvas />
                     <WaveBackground amplitudeRef={waveAmplitude} />
                 </Canvas>
@@ -99,6 +150,16 @@ function App() {
                     <section className="h-screen snap-start flex items-center justify-center">
                         <h2 className="text-white text-2xl">
                         </h2>
+                    </section>
+
+                    <section className="h-screen snap-start flex items-center justify-center">
+                        <h1 className="text-white text-2xl">
+                        </h1>
+                    </section>
+
+                    <section className="h-screen snap-start flex items-center justify-center">
+                        <h1 className="text-white text-2xl">
+                        </h1>
                     </section>
                 </main>
             </div>
