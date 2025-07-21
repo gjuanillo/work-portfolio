@@ -1,13 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import type { Language } from "./types/types";
+import type { SectionProps } from "./types/types";
 
-interface HomeProps {
-    language: Language;
-    isActive: boolean;
-}
 
-const Home = ({ language, isActive }: HomeProps) => {
+const Home = ({ language, isActive }: SectionProps) => {
     const containerRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const subtitleRef = useRef<HTMLParagraphElement>(null);

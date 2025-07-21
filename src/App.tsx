@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
 import Home from './components/Home';
 import circleTexture from './assets/circle-sprite.png';
+import About from './components/About';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -147,11 +148,7 @@ function App() {
 
                     <Home language={lang} isActive={activeSection === 0} />
 
-                    <section className="h-screen snap-start flex items-center justify-center">
-                        <h2 className="text-white text-2xl">
-                        </h2>
-                    </section>
-
+                    <About language={lang} isActive={activeSection === 1} />
                     <section className="h-screen snap-start flex items-center justify-center">
                         <h1 className="text-white text-2xl">
                         </h1>
