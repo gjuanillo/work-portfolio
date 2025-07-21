@@ -1,4 +1,3 @@
-import './App.css';
 import Navbar from './components/Navbar';
 import { Canvas } from '@react-three/fiber';
 import { useRef, useEffect, useState } from 'react';
@@ -9,12 +8,14 @@ import About from './components/About';
 import WaveBackground from './components/animation/WaveBackground';
 import DebugCanvas from './components/animation/DebugCanvas';
 import CameraPosition from './components/animation/CameraPosition';
+import Projects from './components/Projects';
+import Contact from './components/Contact';
 
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
+    const contactRef = useRef<HTMLElement>(null);
     const homeRef = useRef<HTMLElement>(null);
-    const aboutRef = useRef<HTMLElement>(null);
     const waveAmplitude = useRef(1.5);
     const [lang, setLang] = useState<'EN' | 'JP'>('EN');
     const [activeSection, setActiveSection] = useState(0);
@@ -50,8 +51,10 @@ function App() {
             <div className="relative min-h-screen">
                 <Navbar language={lang} setLanguage={setLang} />
                 <main className="relative z-0 snap-y snap-mandatory h-screen overflow-y-scroll scroll-smooth">
-                    <Home ref={homeRef} language={lang} isActive={activeSection === 0} />
-                    <About ref={aboutRef} language={lang} isActive={activeSection === 1} />
+                    <Home ref={homeRef} contactRef={contactRef} language={lang} isActive={activeSection === 0} />
+                    <About language={lang} isActive={activeSection === 1} />
+                    <Projects language={lang} isActive={activeSection === 2} />
+                    <Contact ref={contactRef} language={lang} isActive={activeSection === 3} />
                 </main>
             </div>
         </>

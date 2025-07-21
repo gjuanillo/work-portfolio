@@ -3,7 +3,11 @@ import gsap from "gsap";
 import type { SectionProps } from "./types/types";
 import { typeText } from "./utilities/typeText";
 
-const Home = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, ref) => {
+interface HomeProps extends SectionProps {
+    contactRef: React.RefObject<HTMLElement>;
+}
+
+const Home = forwardRef<HTMLElement, HomeProps>(({ language, isActive, contactRef }, ref) => {
     const homeRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -170,6 +174,9 @@ const Home = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, ref)
                         clipPath: 'polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)',
                         textTransform: 'uppercase',
                         letterSpacing: '2px'
+                    }}
+                    onClick={() => {
+                        contactRef.current?.scrollIntoView({ behavior: "smooth" });
                     }}
                 >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent

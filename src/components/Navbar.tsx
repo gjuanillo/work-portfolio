@@ -83,7 +83,7 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                                 <img
                                     src={src}
                                     alt="icon"
-                                    className={`h-${idx === 1 ? 12 : 8} w-auto`}
+                                    className={`h-8 w-auto`}
                                 />
                             </a>
                         ))}
