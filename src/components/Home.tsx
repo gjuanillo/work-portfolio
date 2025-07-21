@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import type { SectionProps } from "./types/types";
+import { typeText } from "./utilities/typeText";
 
 
 const Home = ({ language, isActive }: SectionProps) => {
@@ -24,24 +25,6 @@ const Home = ({ language, isActive }: SectionProps) => {
         button: "Get Connected"
     };
 
-    // Typing animation function
-    const typeText = (text: string, setter: (text: string) => void, delay: number = 0) => {
-        return new Promise<void>((resolve) => {
-            setTimeout(() => {
-                let currentIndex = 0;
-                const interval = setInterval(() => {
-                    if (currentIndex <= text.length) {
-                        setter(text.slice(0, currentIndex));
-                        currentIndex++;
-                    } else {
-                        clearInterval(interval);
-                        resolve();
-                    }
-                }, 30); //Typing Speed 
-            }, delay);
-        });
-    };
-
     // Main animation sequence
     useEffect(() => {
         if (!isActive) return;
@@ -58,11 +41,11 @@ const Home = ({ language, isActive }: SectionProps) => {
             });
 
             // Glitch effect
-            gsap.fromTo(glitchRef.current, 
+            gsap.fromTo(glitchRef.current,
                 { opacity: 0 },
-                { 
-                    opacity: 1, 
-                    duration: 0.1,
+                {
+                    opacity: 1,
+                    duration: 0.3,
                     repeat: 5,
                     yoyo: true,
                     ease: "power2.inOut"
@@ -79,34 +62,33 @@ const Home = ({ language, isActive }: SectionProps) => {
                     await typeText(content.title, setTitleText);
                 }
             })
-            .to(subtitleRef.current, {
-                opacity: 1,
-                duration: 0.3,
-                onComplete: async () => {
-                    await typeText(content.subtitle, setSubtitleText, 500);
-                }
-            }, "+=0.5")
-            .fromTo(buttonRef.current, 
-                { 
-                    opacity: 0, 
-                    scale: 0.8,
-                    rotateX: -90 
-                },
-                { 
-                    opacity: 1, 
-                    scale: 1,
-                    rotateX: 0,
-                    duration: 0.8,
-                    ease: "back.out(1.7)",
-                    onComplete: () => setShowCursor(false)
-                }, "+=1")
-            .to(buttonRef.current, {
-                y: -5,
-                duration: 2,
-                repeat: -1,
-                yoyo: true,
-                ease: "power2.inOut"
-            });
+                .to(subtitleRef.current, {
+                    opacity: 1,
+                    duration: 0.5,
+                    onComplete: async () => {
+                        await typeText(content.subtitle, setSubtitleText, 500);
+                    }
+                }, "+=0.5")
+                .fromTo(buttonRef.current,
+                    {
+                        opacity: 0,
+                        scale: 0.8,
+                        rotateX: -90
+                    },
+                    {
+                        opacity: 1,
+                        scale: 1,
+                        rotateX: 0,
+                        duration: 0.8,
+                        onComplete: () => setShowCursor(false)
+                    }, "+=2")
+                .to(buttonRef.current, {
+                    y: -5,
+                    duration: 2,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "power4.inOut"
+                });
 
             gsap.to(cursorRef.current, {
                 opacity: 0,
@@ -116,13 +98,13 @@ const Home = ({ language, isActive }: SectionProps) => {
                 ease: "power2.inOut"
             });
 
-            gsap.fromTo(".tech-grid", 
+            gsap.fromTo(".tech-grid",
                 { opacity: 0, scale: 0.95 },
-                { 
-                    opacity: 0.1, 
-                    scale: 1,
-                    duration: 2,
-                    stagger: 0.1,
+                {
+                    opacity: 0.8,
+                    scale: 1.5,
+                    duration: 1,
+                    stagger: 0.2,
                     repeat: -1,
                     yoyo: true,
                     ease: "power2.inOut"
@@ -132,13 +114,14 @@ const Home = ({ language, isActive }: SectionProps) => {
         }, containerRef);
 
         return () => ctx.revert();
-    }, [isActive, language]);
+    }, [isActive, language, content.subtitle, content.title]);
 
     return (
-        <section 
+        <section
             ref={containerRef}
             className="relative h-screen snap-start flex flex-col items-center justify-center px-4 text-center overflow-hidden"
         >
+            {/* Square Debris  */}
             <div className="absolute inset-0 pointer-events-none">
                 {[...Array(20)].map((_, i) => (
                     <div
@@ -155,13 +138,13 @@ const Home = ({ language, isActive }: SectionProps) => {
                 ))}
             </div>
 
-            <div 
+            <div
                 ref={glitchRef}
                 className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 pointer-events-none"
             />
 
             <div className="relative z-10 max-w-4xl">
-                <h1 
+                <h1
                     ref={titleRef}
                     className="text-white text-xl font-custom-bold sm:text-2xl md:text-3xl lg:text-4xl 
                              font-mono tracking-wide leading-tight mb-6"
@@ -173,7 +156,7 @@ const Home = ({ language, isActive }: SectionProps) => {
                     <span className="inline-block">
                         {titleText}
                         {showCursor && (
-                            <span 
+                            <span
                                 ref={cursorRef}
                                 className="inline-block w-0.5 h-6 bg-cyan-400 ml-1 animate-pulse"
                             />
@@ -181,7 +164,7 @@ const Home = ({ language, isActive }: SectionProps) => {
                     </span>
                 </h1>
 
-                <p 
+                <p
                     ref={subtitleRef}
                     className="text-gray-300 text-sm sm:text-base md:text-lg mt-6 max-w-2xl mx-auto
                              font-mono leading-relaxed"
@@ -192,19 +175,19 @@ const Home = ({ language, isActive }: SectionProps) => {
                     <span className="inline-block">
                         {subtitleText}
                         {showCursor && titleText === content.title && (
-                            <span 
+                            <span
                                 className="inline-block w-0.5 h-4 bg-cyan-400 ml-1"
                             />
                         )}
                     </span>
                 </p>
 
-                <button 
+                <button
                     ref={buttonRef}
                     className="relative mt-12 px-8 py-4 text-sm sm:text-base md:text-lg font-mono font-bold
                              text-cyan-400 border-2 border-cyan-400 rounded-none bg-transparent
                              transition-all duration-300 overflow-hidden group
-                             hover:text-black hover:bg-cyan-400 hover:shadow-lg
+                             hover:text-white hover:bg-cyan-400 hover:shadow-lg
                              hover:shadow-cyan-400/50 transform hover:scale-105"
                     style={{
                         clipPath: 'polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)',
@@ -214,9 +197,9 @@ const Home = ({ language, isActive }: SectionProps) => {
                 >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent
                                   transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                    
+
                     <span className="relative z-10">{content.button}</span>
-                    
+
                     <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-400" />
                     <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-cyan-400" />
                     <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-cyan-400" />
@@ -224,6 +207,7 @@ const Home = ({ language, isActive }: SectionProps) => {
                 </button>
             </div>
 
+            {/* Point Debris */}
             <div className="absolute inset-0 pointer-events-none">
                 {[...Array(15)].map((_, i) => (
                     <div
