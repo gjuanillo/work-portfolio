@@ -42,7 +42,6 @@ function App() {
             <div className="fixed inset-0 -z-50">
                 <Canvas className="w-full h-full">
                     <CameraPosition sectionIndex={activeSection} />
-                    <DebugCanvas />
                     <WaveBackground amplitudeRef={waveAmplitude} />
                 </Canvas>
             </div>
