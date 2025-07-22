@@ -6,7 +6,6 @@ import gsap from 'gsap';
 import Home from './components/Home';
 import About from './components/About';
 import WaveBackground from './components/animation/WaveBackground';
-import DebugCanvas from './components/animation/DebugCanvas';
 import CameraPosition from './components/animation/CameraPosition';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
