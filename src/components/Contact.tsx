@@ -31,6 +31,22 @@ const Contact = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, r
             );
         }, formRef);
 
+        gsap.from('.title', {
+            y: 20,
+            opacity: 0,
+            duration: 2,
+            ease: 'power3.out',
+            stagger: 0.3,
+        });
+
+        gsap.from('.subtitle', {
+            y: 20,
+            opacity: 0,
+            duration: 2,
+            ease: 'power3.out',
+            stagger: 0.6,
+        });
+
         return () => ctx.revert();
     }, [isActive]);
 
@@ -41,7 +57,6 @@ const Contact = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, r
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!formRef.current) return;
-
         emailjs
             .sendForm(serviceId, templateId, formRef.current, publicKey)
             .then(
@@ -66,13 +81,13 @@ const Contact = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, r
         >
             <div className="w-full max-w-4xl text-white">
                 <div className="mb-10 text-center">
-                    <h2 className="text-3xl sm:text-4xl font-bold tracking-wide mb-2">
+                    <h2 className="title text-3xl sm:text-4xl tracking-wide mb-2">
                         {language === "JP" ? "お問い合わせ" : "Contact"}
                     </h2>
-                    <p className="text-white/70 max-w-xl mx-auto text-sm sm:text-base">
+                    <p className="subtitle text-white/70 max-w-xl mx-auto text-sm sm:text-base">
                         {language === "JP"
-                            ? "ご質問やご相談があれば、お気軽にご連絡ください。"
-                            : "Feel free to reach out with any questions or inquiries."}
+                            ? "フリーランスまたは正社員としての勤務が可能です。開発者をお探しでしたら、ぜひご連絡ください。"
+                            : "Available for freelance or full-time roles. Get in touch if you're looking for a developer to bring your project to life"}
                     </p>
                 </div>
 
@@ -116,7 +131,6 @@ const Contact = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, r
                     </button>
                 </form>
 
-                {/* Snackbar feedback */}
                 <Snackbar
                     open={snackbarOpen}
                     autoHideDuration={5000}

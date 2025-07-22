@@ -60,12 +60,9 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
 
                 {/* Right */}
                 <div className="flex items-center gap-4">
-                    {/* Language Toggle */}
                     <div ref={langRef}>
                         <ToggleButton language={language} setLanguage={setLanguage} />
                     </div>
-
-                    {/* Social Icons */}
                     <div className="hidden md:flex items-center gap-3">
                         {[github, linkedIn, twitter].map((src, idx) => (
                             <a
@@ -89,13 +86,9 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                             </a>
                         ))}
                     </div>
-
-                    {/* Hamburger Menu */}
                     <Hamburger toggled={isOpen} toggle={setIsOpen} color="#14C1ED" size={30} />
                 </div>
             </nav>
-
-            {/* Slide-in Menu */}
             <Menu isOpen={isOpen} setIsOpen={setIsOpen} language={language}/>
         </>
     );

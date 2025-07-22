@@ -7,15 +7,14 @@ const CameraPosition = ({ sectionIndex }: { sectionIndex: number }) => {
 
     useEffect(() => {
         const positions = [
-            { x: 35, y: 0, z: 5, tilt: -Math.PI / 8 },   // Section 0
-            { x: 0, y: 2, z: 5, tilt: 0 },             // Section 1
-            { x: -35, y: 0, z: 5, tilt: Math.PI / 12 },  // Section 2
-            { x: 0, y: 10, z: 0, tilt: 0 },  // Section 2
+            { x: 35, y: 0, z: 5, tilt: -Math.PI / 8 },
+            { x: 0, y: 2, z: 5, tilt: 0 },             
+            { x: -35, y: 0, z: 5, tilt: Math.PI / 12 },
+            { x: 0, y: 10, z: 0, tilt: 0 },
         ];
 
         const target = positions[sectionIndex] || positions[0];
 
-        // Animate position
         gsap.to(camera.position, {
             x: target.x,
             y: target.y,
@@ -27,7 +26,6 @@ const CameraPosition = ({ sectionIndex }: { sectionIndex: number }) => {
             }
         });
 
-        // Animate tilt (z-rotation)
         gsap.to(camera.rotation, {
             z: target.tilt,
             duration: 1.5,

@@ -7,7 +7,7 @@ const DebugCanvas = () => {
     useEffect(() => {
         console.log('Canvas size:', size);
         console.log('Camera:', camera);
-        console.log('WebGL Renderer:', gl.domElement); // the actual canvas
+        console.log('WebGL Renderer:', gl.domElement); 
     }, [size, camera, gl.domElement]);
 
     return null;

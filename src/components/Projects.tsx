@@ -11,7 +11,6 @@ const Projects = ({ language, isActive }: SectionProps) => {
     const headerRef = useRef<HTMLHeadingElement | null>(null);
     const [selected, setSelected] = useState(0);
 
-    // Animate cards
     useEffect(() => {
         if (!isActive) return;
 
@@ -39,7 +38,6 @@ const Projects = ({ language, isActive }: SectionProps) => {
         return () => ctx.revert();
     }, [isActive]);
 
-    // Animate detail panel
     useEffect(() => {
         if (!isActive || !detailRef.current) return;
 
@@ -71,9 +69,9 @@ const Projects = ({ language, isActive }: SectionProps) => {
                     {/* Archive Header */}
                     <h2
                         ref={headerRef}
-                        className="text-white text-3xl font-bold tracking-wide mb-6 text-center lg:text-left"
+                        className="text-white text-3xl tracking-wide mb-6 text-center lg:text-left"
                     >
-                        {language === "JP" ? "プロジェクトアーカイブ" : "Project Archive"}
+                        {language === "JP" ? "制作実績" : "Project Archive"}
                     </h2>
 
                     {/* Cards */}
@@ -101,7 +99,7 @@ const Projects = ({ language, isActive }: SectionProps) => {
                                 }}
                                 className="w-full max-w-[280px] sm:max-w-full mx-auto"
                             >
-                                <ProjectCard project={project} selected={selected === index} />
+                                <ProjectCard language={language} project={project} selected={selected === index} />
 
                                 {/* Mobile inline details */}
                                 <div className="block lg:hidden mt-2">
@@ -114,7 +112,7 @@ const Projects = ({ language, isActive }: SectionProps) => {
                                                 {language === "JP" ? "プロジェクト詳細" : "Details"}
                                             </h4>
                                             <p className="text-white/80 font-mono text-sm mb-1">
-                                                {project.desc}
+                                                {language === "EN" ? project.desc : project.descJp}
                                             </p>
                                             <ul className="flex flex-wrap gap-2 text-xs mt-1">
                                                 {project.tags.map((tag) => (
@@ -143,7 +141,7 @@ const Projects = ({ language, isActive }: SectionProps) => {
                         {language === "JP" ? "プロジェクト詳細" : "Project Details"}
                     </h3>
                     <div className="text-white/80 font-mono text-sm">
-                        <p className="mb-2">{projectsData[selected].desc}</p>
+                        <p className="mb-2">{language === 'EN' ? projectsData[selected].desc : projectsData[selected].descJp}</p>
                         <ul className="flex flex-wrap gap-2 text-xs mt-2">
                             {projectsData[selected].tags.map((tag) => (
                                 <li

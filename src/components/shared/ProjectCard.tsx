@@ -1,9 +1,12 @@
+import type { Language } from '../types/types';
 import CardCorners from './CardCorners';
 
 type Project = {
     id: string;
     title: string;
+    titleJp: string;
     desc: string;
+    descJp: string;
     image: string;
     tags: string[];
 };
@@ -11,9 +14,10 @@ type Project = {
 type ProjectCardProps = {
     project: Project;
     selected?: boolean;
+    language: Language;
 };
 
-const ProjectCard = ({ project, selected = false }: ProjectCardProps) => {
+const ProjectCard = ({ language, project, selected = false }: ProjectCardProps) => {
     return (
         <div
             className={`
@@ -24,12 +28,10 @@ const ProjectCard = ({ project, selected = false }: ProjectCardProps) => {
                 cursor-pointer overflow-hidden
             `}
         >
-            {/* Scanline effect */}
             <div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/5 to-transparent
                            transform -translate-x-full group-hover:translate-x-full
                            -skew-x-12 transition-transform duration-1000" />
 
-            {/* Image */}
             <div className="w-full aspect-[16/9] sm:aspect-video mb-2 sm:mb-3 rounded-md sm:rounded-lg overflow-hidden border border-cyan-500/20">
                 <img
                     src={project.image}
@@ -38,9 +40,8 @@ const ProjectCard = ({ project, selected = false }: ProjectCardProps) => {
                 />
             </div>
 
-            {/* Title */}
             <h4 className="text-white font-semibold text-base sm:text-lg relative z-10">
-                {project.title}
+                {language === 'EN' ? project.title : project.titleJp}
             </h4>
             <CardCorners isBento={true} />
         </div>

@@ -8,16 +8,16 @@ const ProfileData = ({ language }: { language: Language }) => {
         fullName: "Gabrielle Jonathan Juanillo",
         age: myAge,
         origin: "マカティ市、フィリピン",
-        title: "フルスタックソフトウェア開発者",
+        title: "フルスタックエンジニア",
         languages: "フィリピン語、英語、N3日本語",
-        interests: "音楽、日本文学、新技術の発見"
+        interests: "音楽、日本文化、新技術の発見"
     } : {
         fullName: "Gabrielle Jonathan Juanillo",
         age: myAge,
         origin: "Makati City, Philippines",
         title: "Full-stack Software Developer",
         languages: "Filipino, English, N3 Japanese",
-        interests: "Music, Japanese Literature, Discovering New Technologies"
+        interests: "Music, Japanese Culture, Discovering New Technologies"
     };
 
     return (
