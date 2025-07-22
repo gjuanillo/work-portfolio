@@ -20,9 +20,9 @@ const Projects = ({ language, isActive }: SectionProps) => {
             gsap.to(cardRefs.current, {
                 opacity: 1,
                 y: 0,
-                duration: 0.6,
+                duration: 2,
                 ease: "power3.out",
-                stagger: 0.1,
+                stagger: 0.3,
             });
         }, containerRef);
 
@@ -41,8 +41,8 @@ const Projects = ({ language, isActive }: SectionProps) => {
             {
                 opacity: 1,
                 x: 0,
-                duration: 0.5,
-                ease: "power2.out",
+                duration: 1,
+                ease: "power3.out",
             }
         );
 
@@ -56,9 +56,9 @@ const Projects = ({ language, isActive }: SectionProps) => {
             ref={containerRef}
             className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden"
         >
-            <div className="max-w-7xl w-full h-full flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-12 pt-24 px-6">
+            <div className="max-w-7xl w-full h-full flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-12 pt-24 px-4 sm:px-6">
                 {/* Project Cards */}
-                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 pr-0 lg:pr-4">
+                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 pr-0 lg:pr-4 w-full">
                     {projectsData.map((project, index) => (
                         <div
                             key={project.id}
@@ -80,13 +80,41 @@ const Projects = ({ language, isActive }: SectionProps) => {
                                     ease: "power2.inOut",
                                 });
                             }}
+                            className="w-full max-w-[280px] sm:max-w-full mx-auto"
                         >
                             <ProjectCard project={project} selected={selected === index} />
+
+                            {/* Show detail inline on mobile */}
+                            <div className="block lg:hidden mt-2">
+                                {selected === index && (
+                                    <div
+                                        ref={detailRef}
+                                        className="border-t border-cyan-500/20 pt-2 mt-2"
+                                    >
+                                        <h4 className="text-white text-base font-semibold mb-1">
+                                            {language === "JP" ? "プロジェクト詳細" : "Details"}
+                                        </h4>
+                                        <p className="text-white/80 font-mono text-sm mb-1">
+                                            {project.desc}
+                                        </p>
+                                        <ul className="flex flex-wrap gap-2 text-xs mt-1">
+                                            {project.tags.map((tag) => (
+                                                <li
+                                                    key={tag}
+                                                    className="bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded"
+                                                >
+                                                    #{tag}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>
 
-                {/* Project Detail View */}
+                {/* Project Detail View (desktop only) */}
                 <div
                     ref={detailRef}
                     className="hidden lg:block flex-1 border-l border-cyan-500/30 pl-6"
