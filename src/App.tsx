@@ -17,7 +17,7 @@ function App() {
     const contactRef = useRef<HTMLElement>(null);
     const homeRef = useRef<HTMLElement>(null);
     const waveAmplitude = useRef(1.5);
-    const [lang, setLang] = useState<'EN' | 'JP'>('JP');
+    const [lang, setLang] = useState<'EN' | 'JP'>('EN');
     const [activeSection, setActiveSection] = useState(0);
 
     useEffect(() => {
