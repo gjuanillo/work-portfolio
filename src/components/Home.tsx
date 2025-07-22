@@ -4,7 +4,7 @@ import type { SectionProps } from "./types/types";
 import { typeText } from "./utilities/typeText";
 
 interface HomeProps extends SectionProps {
-    contactRef: React.RefObject<HTMLElement>;
+    contactRef: React.RefObject<HTMLElement | null>;
 }
 
 const Home = forwardRef<HTMLElement, HomeProps>(({ language, isActive, contactRef }, ref) => {
@@ -31,51 +31,55 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ language, isActive, contactRe
 
     useEffect(() => {
         if (!isActive) return;
-
-        const ctx = gsap.context(() => {
+        const ctx = gsap.context(async () => {
             setTitleText("");
             setSubtitleText("");
             setShowCursor(true);
-
             gsap.set([titleRef.current, subtitleRef.current, buttonRef.current], { opacity: 0 });
 
-            const tl = gsap.timeline();
-
-            tl.to(titleRef.current, {
+            await gsap.to(titleRef.current, {
                 opacity: 1,
                 duration: 0.3,
-                onComplete: async () => {
-                    await typeText(content.title, setTitleText);
-                }
-            })
-                .to(subtitleRef.current, {
+            });
+
+            // Wait for typing to complete
+            await typeText(content.title, setTitleText);
+
+            // Second animation
+            await gsap.to(subtitleRef.current, {
+                opacity: 1,
+                duration: 0.3,
+            });
+
+            // Wait for subtitle typing
+            await typeText(content.subtitle, setSubtitleText, 500);
+
+            // Final animations
+            gsap.fromTo(buttonRef.current,
+                {
+                    opacity: 0,
+                    scale: 0.8,
+                    rotateX: -90
+                },
+                {
                     opacity: 1,
+                    scale: 1,
+                    rotateX: 0,
                     duration: 0.5,
-                    onComplete: async () => {
-                        await typeText(content.subtitle, setSubtitleText, 500);
-                    }
-                }, "+=0.5")
-                .fromTo(buttonRef.current,
-                    {
-                        opacity: 0,
-                        scale: 0.8,
-                        rotateX: -90
-                    },
-                    {
-                        opacity: 1,
-                        scale: 1,
-                        rotateX: 0,
-                        duration: 0.8,
-                        onComplete: () => setShowCursor(false)
-                    }, "+=2")
-                .to(buttonRef.current, {
-                    y: -5,
-                    duration: 2,
-                    repeat: -1,
-                    yoyo: true,
-                    ease: "power4.inOut"
+                    delay: 0.5,
+                    onComplete: () => setShowCursor(false)
                 });
 
+            gsap.to(buttonRef.current, {
+                y: -5,
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "power4.inOut",
+                delay: 2.8
+            });
+
+            // These can run independently
             gsap.to(cursorRef.current, {
                 opacity: 0,
                 duration: 0.5,
@@ -96,9 +100,7 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ language, isActive, contactRe
                     ease: "power2.inOut"
                 }
             );
-
         }, homeRef);
-
         return () => ctx.revert();
     }, [isActive, language, content.subtitle, content.title]);
 

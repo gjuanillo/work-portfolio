@@ -79,7 +79,9 @@ const Projects = ({ language, isActive }: SectionProps) => {
                         {projectsData.map((project, index) => (
                             <div
                                 key={project.id}
-                                ref={(el) => (cardRefs.current[index] = el)}
+                                ref={(el) => {
+                                    cardRefs.current[index] = el;
+                                }}
                                 onClick={() => setSelected(index)}
                                 onMouseEnter={() => {
                                     gsap.to(cardRefs.current[index], {

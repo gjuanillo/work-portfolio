@@ -11,7 +11,7 @@ import Menu from "./shared/Menu";
 
 const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
     const logoRef = useRef(null);
-    const socialRefs = useRef<HTMLDivElement[]>([]);
+    const socialRefs = useRef<(HTMLAnchorElement | null)[]>([]);
     const langRef = useRef(null);
     const navRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -69,7 +69,9 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                         {[github, linkedIn, twitter].map((src, idx) => (
                             <a
                                 key={idx}
-                                ref={(el) => el && (socialRefs.current[idx] = el)}
+                                ref={(el) => {
+                                    socialRefs.current[idx] = el;
+                                }}
                                 href={
                                     idx === 1
                                         ? "https://www.linkedin.com/in/gcjuanillo/"

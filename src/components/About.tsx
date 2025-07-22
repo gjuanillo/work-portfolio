@@ -161,7 +161,7 @@ const About = ({ language, isActive }: SectionProps) => {
                         {techStacks.map((tech, index) => (
                             <div
                                 key={tech.name}
-                                ref={(el) => techItemsRef.current[index] = el}
+                                ref={(el) => { techItemsRef.current[index] = el; }}
                                 className={`
                                   ${getSizeClass(tech.size)}
                                   ${tech.color} ${tech.border} ${hoveredTech === index ? tech.glow : ''}
@@ -265,7 +265,7 @@ const About = ({ language, isActive }: SectionProps) => {
 
                                 {/* Tech Stack Grid */}
                                 <div className="flex flex-wrap justify-center gap-1 sm:gap-2 w-full h-5/6">
-                                    {techStacks.map((tech, index) => (
+                                    {techStacks.map((tech) => (
                                         <div
                                             key={`back-${tech.name}`}
                                             className={`
