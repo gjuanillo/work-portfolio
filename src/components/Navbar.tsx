@@ -55,7 +55,9 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
             <nav ref={navRef} className="fixed top-0 z-50 w-full flex justify-between items-center px-4 sm:px-6 md:px-10 lg:px-20 py-4 h-30">
                 {/* Left: Logo */}
                 <div ref={logoRef} className="h-full flex items-center">
-                    <img src={logo} alt="Logo" className="h-full w-auto max-h-18" />
+                    <a href="/">
+                        <img src={logo} alt="Logo" className="h-full w-auto max-h-18" />
+                    </a>
                 </div>
 
                 {/* Right */}
@@ -89,7 +91,7 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
                     <Hamburger toggled={isOpen} toggle={setIsOpen} color="#14C1ED" size={30} />
                 </div>
             </nav>
-            <Menu isOpen={isOpen} setIsOpen={setIsOpen} language={language}/>
+            <Menu isOpen={isOpen} setIsOpen={setIsOpen} language={language} />
         </>
     );
 };
