@@ -42,7 +42,6 @@ const About = ({ language, isActive }: SectionProps) => {
             const tl = gsap.timeline();
 
             if (isDesktop) {
-                // Faster bento grid pop-in
                 tl.to(bentoRef.current, {
                     opacity: 1,
                     y: 0,
@@ -51,7 +50,6 @@ const About = ({ language, isActive }: SectionProps) => {
                     ease: "circ.out",
                 });
 
-                // Snappier tile animation
                 tl.to(techItemsRef.current, {
                     opacity: 1,
                     scale: 1,
@@ -65,31 +63,28 @@ const About = ({ language, isActive }: SectionProps) => {
                 }, "-=0.3");
             }
 
-            // Profile card pop with spring-like bounce
             tl.to(profileCardRef.current, {
                 opacity: 1,
                 y: 0,
                 scale: 1,
                 skewY: 0,
-                duration: 0.4,
+                duration: 2,
                 ease: "power2.out",
             }, isDesktop ? "-=0.4" : "0");
 
-            // Float animation
             techItemsRef.current.forEach((item, index) => {
                 if (item) {
                     gsap.to(item, {
                         y: `+=${Math.sin(index) * 8 + 4}`,
-                        duration: 1.8 + Math.random(),
+                        duration: 2.5 + Math.random(),
                         repeat: -1,
                         yoyo: true,
                         ease: "sine.inOut",
-                        delay: Math.random() * 0.3,
+                        delay: Math.random() * 0.6,
                     });
                 }
             });
 
-            // Image slow spin
             gsap.to(profileImageRef.current, {
                 rotate: 360,
                 duration: 15,
@@ -109,6 +104,14 @@ const About = ({ language, isActive }: SectionProps) => {
                     ease: "power2.inOut"
                 }
             );
+
+            gsap.from('.title', {
+                y: 20,
+                opacity: 0,
+                duration: 2,
+                ease: 'power2.out',
+                stagger: 0.1,
+            });
 
         }, containerRef);
 
@@ -151,7 +154,7 @@ const About = ({ language, isActive }: SectionProps) => {
                     ref={bentoRef}
                     className="hidden lg:block flex-1 max-w-4xl px-10"
                 >
-                    <h2 className="text-xl sm:text-2xl lg:text-3xl text-white mb-6 lg:mb-8 text-center lg:text-left">
+                    <h2 className="title text-xl sm:text-2xl lg:text-3xl text-white mb-6 lg:mb-8 text-center lg:text-left">
                         Tech Stack
                     </h2>
                     <div className="flex flex-wrap gap-3">
@@ -189,7 +192,6 @@ const About = ({ language, isActive }: SectionProps) => {
                     className="flex-1 max-w-xs md:max-w-sm lg:max-w-md w-full"
                 >
                     {/* Flip indicator for mobile */}
-
                     <div
                         className="relative w-full aspect-[3/4] sm:aspect-[5/6] lg:aspect-[4/5] perspective-1000 cursor-pointer"
                         onClick={handleCardClick}
@@ -200,13 +202,12 @@ const About = ({ language, isActive }: SectionProps) => {
                             className="relative w-full h-full transition-transform duration-800 transform-style-preserve-3d"
                             style={{ transformStyle: 'preserve-3d' }}
                         >
-
                             {/* Front: Profile Card */}
                             <div
                                 className={`
                                     absolute inset-0 w-full h-full backface-hidden
-                                    bg-gradient-to-br from-gray-900/80 to-gray-800/80 
-                                    backdrop-blur-lg border-2 border-cyan-500/30 rounded-xl lg:rounded-2xl p-4 sm:p-6
+                                    bg-gradient-to-br from-gray-900/40 to-gray-800/40 
+                                    backdrop-blur-2xl border-2 border-cyan-500/30 rounded-xl lg:rounded-2xl p-4 sm:p-6
                                     transition-all duration-500 hover:border-cyan-400/50
                                     ${profileHovered ? 'shadow-2xl shadow-cyan-500/20' : ''}
                                 `}
@@ -251,7 +252,7 @@ const About = ({ language, isActive }: SectionProps) => {
                             {/* Back: Tech Stack Bento Grid */}
                             <div
                                 className="absolute inset-0 w-full h-full backface-hidden
-                                         bg-gradient-to-br from-gray-900/80 to-gray-800/80 
+                                         bg-gradient-to-br from-gray-900/60 to-gray-800/60 
                                          backdrop-blur-lg border-2 border-cyan-500/30 rounded-xl lg:rounded-2xl p-3 sm:p-4"
                                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                             >
@@ -293,11 +294,8 @@ const About = ({ language, isActive }: SectionProps) => {
                                         </div>
                                     ))}
                                 </div>
-
-                                {/* Terminal-style corners */}
                                 <CardCorners isBento={false} />
                             </div>
-
                         </div>
                     </div>
                 </div>

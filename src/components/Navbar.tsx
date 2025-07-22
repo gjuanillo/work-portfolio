@@ -7,6 +7,7 @@ import linkedIn from '../assets/LinkedIn_Cyan.png';
 import twitter from '../assets/X-Cyan.png';
 import ToggleButton from "./shared/ToggleButton";
 import type { NavbarProps } from "./types/types";
+import Menu from "./shared/Menu";
 
 const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
     const logoRef = useRef(null);
@@ -95,33 +96,7 @@ const Navbar: React.FC<NavbarProps> = ({ language, setLanguage }) => {
             </nav>
 
             {/* Slide-in Menu */}
-            <div
-                className={`
-                fixed inset-0 
-                bg-[#3e4b4d]/10 
-                backdrop-blur-lg 
-                flex flex-col items-center justify-center gap-8 
-                transition-all duration-500 ease-out 
-                z-40
-                ${isOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-95 pointer-events-none'}
-              `}
-            >
-                {['Home', 'About', 'Projects', 'Contact'].map((label, index) => (
-                    <button
-                        key={label}
-                        onClick={() => {
-                            const section = document.querySelectorAll('section')[index];
-                            if (section) {
-                                section.scrollIntoView({ behavior: 'smooth' });
-                                setIsOpen(false);
-                            }
-                        }}
-                        className="text-cyan-400 text-2xl font-mono hover:text-white transition-colors duration-300"
-                    >
-                        {label}
-                    </button>
-                ))}
-            </div>
+            <Menu isOpen={isOpen} setIsOpen={setIsOpen} language={language}/>
         </>
     );
 };

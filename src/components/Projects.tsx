@@ -1,12 +1,116 @@
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 import type { SectionProps } from "./types/types";
+import { projects as projectsData } from "./utilities/projects";
+import ProjectCard from "./shared/ProjectCard";
 
 const Projects = ({ language, isActive }: SectionProps) => {
+    const containerRef = useRef<HTMLElement>(null);
+    const detailRef = useRef<HTMLDivElement | null>(null);
+    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const [selected, setSelected] = useState(0);
+
+    // Animate cards in when section is active
+    useEffect(() => {
+        if (!isActive) return;
+
+        const ctx = gsap.context(() => {
+            gsap.set(cardRefs.current, { opacity: 0, y: 40 });
+
+            gsap.to(cardRefs.current, {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power3.out",
+                stagger: 0.1,
+            });
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, [isActive]);
+
+    // Animate detail panel on selection change
+    useEffect(() => {
+        if (!isActive || !detailRef.current) return;
+
+        const tl = gsap.timeline();
+
+        tl.fromTo(
+            detailRef.current,
+            { opacity: 0, x: 40 },
+            {
+                opacity: 1,
+                x: 0,
+                duration: 0.5,
+                ease: "power2.out",
+            }
+        );
+
+        return () => {
+            gsap.set(detailRef.current, { opacity: 0, x: 40 });
+        };
+    }, [selected, isActive]);
+
     return (
         <section
-            className="min-h-screen snap-start flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 lg:py-0 relative overflow-hidden"
+            ref={containerRef}
+            className="min-h-screen snap-start flex items-center justify-center relative overflow-hidden"
         >
+            <div className="max-w-7xl w-full h-full flex flex-col lg:flex-row items-start justify-center gap-8 lg:gap-12 pt-24 px-6">
+                {/* Project Cards */}
+                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4 pr-0 lg:pr-4">
+                    {projectsData.map((project, index) => (
+                        <div
+                            key={project.id}
+                            ref={(el) => (cardRefs.current[index] = el)}
+                            onClick={() => setSelected(index)}
+                            onMouseEnter={() => {
+                                gsap.to(cardRefs.current[index], {
+                                    scale: 1.03,
+                                    boxShadow: "0px 0px 20px rgba(20, 193, 237, 0.2)",
+                                    duration: 0.3,
+                                    ease: "power2.out",
+                                });
+                            }}
+                            onMouseLeave={() => {
+                                gsap.to(cardRefs.current[index], {
+                                    scale: 1,
+                                    boxShadow: "none",
+                                    duration: 0.3,
+                                    ease: "power2.inOut",
+                                });
+                            }}
+                        >
+                            <ProjectCard project={project} selected={selected === index} />
+                        </div>
+                    ))}
+                </div>
+
+                {/* Project Detail View */}
+                <div
+                    ref={detailRef}
+                    className="hidden lg:block flex-1 border-l border-cyan-500/30 pl-6"
+                >
+                    <h3 className="text-white text-xl mb-4">
+                        {language === "JP" ? "プロジェクト詳細" : "Project Details"}
+                    </h3>
+                    <div className="text-white/80 font-mono text-sm">
+                        <p className="mb-2">{projectsData[selected].desc}</p>
+                        <ul className="flex flex-wrap gap-2 text-xs mt-2">
+                            {projectsData[selected].tags.map((tag) => (
+                                <li
+                                    key={tag}
+                                    className="bg-cyan-500/10 text-cyan-400 px-2 py-1 rounded"
+                                >
+                                    #{tag}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </section>
-    )
-}
+    );
+};
 
 export default Projects;

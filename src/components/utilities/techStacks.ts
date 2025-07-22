@@ -48,7 +48,7 @@ export const techStacks = [
         border: "border-purple-500/30",
         glow: "shadow-purple-500/20",
         image: threeJS,
-        size: "md"
+        size: "sm"
     },
     {
         name: "Linux",
@@ -56,7 +56,7 @@ export const techStacks = [
         border: "border-orange-500/30",
         glow: "shadow-orange-500/20",
         image: linux,
-        size: "sm"
+        size: "md"
     },
     {
         name: "NeoVim",

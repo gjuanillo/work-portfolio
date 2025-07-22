@@ -128,10 +128,9 @@ const Home = forwardRef<HTMLElement, HomeProps>(({ language, isActive, contactRe
                 <h1
                     ref={titleRef}
                     className="text-white text-xl font-custom-bold sm:text-2xl md:text-3xl lg:text-4xl 
-                             font-mono tracking-wide leading-tight mb-6"
+                             tracking-wide leading-tight mb-6"
                     style={{
                         textShadow: '0 0 10px rgba(20, 193, 237, 0.5), 0 0 20px rgba(20, 193, 237, 0.3)',
-                        fontFamily: "'Courier New', monospace"
                     }}
                 >
                     <span className="inline-block">
