@@ -13,11 +13,4 @@ export const projects = [
         image: '/images/ai.jpg',
         tags: ['AI', 'JavaScript', 'OpenAI'],
     },
-    {
-        id: '3',
-        title: 'E-commerce Dashboard',
-        desc: 'An analytics-heavy admin dashboard for online stores.',
-        image: '/images/dashboard.jpg',
-        tags: ['Next.js', 'Chart.js', 'TailwindCSS'],
-    },
 ];

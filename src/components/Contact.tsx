@@ -1,9 +1,18 @@
-import { forwardRef, useRef, useEffect } from "react";
+import { forwardRef, useRef, useEffect, useState } from "react";
+import emailjs from "@emailjs/browser";
 import gsap from "gsap";
+import { Snackbar, Alert } from "@mui/material";
 import type { SectionProps } from "./types/types";
 
 const Contact = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, ref) => {
     const formRef = useRef<HTMLFormElement>(null);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarType, setSnackbarType] = useState<"success" | "error">("success");
+    const [snackbarMsg, setSnackbarMsg] = useState("");
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     useEffect(() => {
         if (!isActive || !formRef.current) return;
@@ -25,6 +34,31 @@ const Contact = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, r
         return () => ctx.revert();
     }, [isActive]);
 
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!formRef.current) return;
+
+        emailjs
+            .sendForm(serviceId, templateId, formRef.current, publicKey)
+            .then(
+                () => {
+                    setSnackbarType("success");
+                    setSnackbarMsg(language === "JP" ? "メールが送信されました。" : "Message sent successfully.");
+                    setSnackbarOpen(true);
+                    formRef.current?.reset();
+                },
+                () => {
+                    setSnackbarType("error");
+                    setSnackbarMsg(language === "JP" ? "メールの送信に失敗しました。" : "Failed to send message.");
+                    setSnackbarOpen(true);
+                }
+            );
+    };
+
     return (
         <section
             ref={ref}
@@ -44,27 +78,35 @@ const Contact = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, r
 
                 <form
                     ref={formRef}
+                    onSubmit={handleSubmit}
                     className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-white"
                 >
                     <input
+                        name="name"
                         type="text"
                         placeholder={language === "JP" ? "お名前" : "Name"}
                         className="bg-transparent border-b border-cyan-400 px-4 py-2 focus:outline-none placeholder-white/60"
+                        required
                     />
                     <input
+                        name="email"
                         type="email"
                         placeholder={language === "JP" ? "メールアドレス" : "Email"}
                         className="bg-transparent border-b border-cyan-400 px-4 py-2 focus:outline-none placeholder-white/60"
+                        required
                     />
                     <input
+                        name="subject"
                         type="text"
                         placeholder={language === "JP" ? "件名" : "Subject"}
                         className="bg-transparent border-b border-cyan-400 px-4 py-2 focus:outline-none placeholder-white/60 sm:col-span-2"
                     />
                     <textarea
+                        name="message"
                         rows={4}
                         placeholder={language === "JP" ? "メッセージ" : "Message"}
                         className="bg-transparent border-b border-cyan-400 px-4 py-2 resize-none focus:outline-none placeholder-white/60 sm:col-span-2"
+                        required
                     />
                     <button
                         type="submit"
@@ -73,6 +115,28 @@ const Contact = forwardRef<HTMLElement, SectionProps>(({ language, isActive }, r
                         {language === "JP" ? "送信" : "Send Message"}
                     </button>
                 </form>
+
+                {/* Snackbar feedback */}
+                <Snackbar
+                    open={snackbarOpen}
+                    autoHideDuration={5000}
+                    onClose={handleCloseSnackbar}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                >
+                    <Alert
+                        onClose={handleCloseSnackbar}
+                        severity={snackbarType}
+                        sx={{
+                            backgroundColor: snackbarType === "success" ? "#14C1ED" : "#dc2626",
+                            color: "white",
+                            fontWeight: "bold",
+                            borderRadius: "8px",
+                        }}
+                        variant="filled"
+                    >
+                        {snackbarMsg}
+                    </Alert>
+                </Snackbar>
             </div>
         </section>
     );
